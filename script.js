@@ -29,7 +29,7 @@ function renderRow(item, index) {
   };
 
   const imgCell = document.createElement('td');
-  imgCell.innerHTML = `<div>${name}</div><img src="${image}" alt="${name}" style="width:512px;height:auto;">`;
+  imgCell.innerHTML = `<div>${name}</div><img src="${image}" alt="${name}" style="width:150px;height:auto;">`;
   row.appendChild(imgCell);
 
   row.appendChild(createInputCell());
