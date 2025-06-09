@@ -33,6 +33,7 @@ function renderRow(item, index) {
   imgCell.innerHTML = `<img src="${image}" alt="${name}" style="width:75px;height:auto;">`;
   nameCell.innerHTML = `<h5>${name}</h5>`;
   row.appendChild(imgCell);
+  row.appendChild(nameCell);
 
   row.appendChild(createInputCell());
   row.appendChild(createInputCell());
