@@ -1,44 +1,99 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Калькулятор предметов</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-</head>
-<body class="bg-dark text-light">
-  <div class="container py-5">
-    <h1 class="text-center mb-5">Калькулятор предметов</h1>
-    <div class="table-responsive">
-      <table class="table table-dark table-bordered align-middle text-center" id="items-table">
-        <thead class="table-secondary text-dark">
-          <tr>
-            <th>Название и изображение</th>
-            <th>Нетронутый</th>
-            <th>Поношенный</th>
-            <th>Поврежденный</th>
-            <th>Сильно поврежденный</th>
-            <th>Цена</th>
-            <th>Итого</th>
-          </tr>
-        </thead>
-        <tbody id="table-body"></tbody>
-        <tfoot>
-          <tr class="table-info text-dark">
-            <th colspan="6">ИТОГО</th>
-            <th id="total-sum">0</th>
-          </tr>
-          <tr class="table-success text-dark">
-            <th colspan="6">ВЫРУЧКА</th>
-            <th id="total-revenue">0</th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-    <div class="text-center mt-4">
-      <button class="btn btn-outline-light" id="reset-button">Сброс</button>
-    </div>
-  </div>
-  <script src="script.js"></script>
-</body>
-</html>
+const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTVCL2g2pNJ9eS_RkbG3lBt6aQFSAdWlB_9cvM90SiOFaHXD1cXL1Qmm6E5w8-tuITducUUUnRE79mV/pub?gid=0&single=true&output=csv';
+
+const formatNumber = (num) => Number(num).toLocaleString('ru-RU');
+
+function fetchSheetData() {
+  return fetch(sheetUrl)
+    .then(response => response.text())
+    .then(data => {
+      const rows = data.trim().split('\n').map(row => row.split(','));
+      rows.shift(); // remove header
+      return rows;
+    });
+}
+
+function renderRow(item, index) {
+  const [name, k1, k2, k3, k4, price, image, fullPrice] = item;
+  const row = document.createElement('tr');
+
+  const createInputCell = () => {
+    const cell = document.createElement('td');
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = 0;
+    input.value = 0;
+    input.classList.add('form-control', 'quantity-input');
+    input.addEventListener('input', recalculateTotals);
+    cell.appendChild(input);
+    return cell;
+  };
+
+  const imgCell = document.createElement('td');
+  imgCell.innerHTML = `<div>${name}</div><img src="${image}" alt="${name}" style="width:50px;height:auto;">`;
+  row.appendChild(imgCell);
+
+  row.appendChild(createInputCell());
+  row.appendChild(createInputCell());
+  row.appendChild(createInputCell());
+  row.appendChild(createInputCell());
+
+  const priceCell = document.createElement('td');
+  priceCell.textContent = formatNumber(price);
+  row.appendChild(priceCell);
+
+  const totalCell = document.createElement('td');
+  totalCell.classList.add('item-total');
+  totalCell.textContent = '0';
+  row.appendChild(totalCell);
+
+  row.dataset.index = index;
+  row.dataset.k1 = parseFloat(k1);
+  row.dataset.k2 = parseFloat(k2);
+  row.dataset.k3 = parseFloat(k3);
+  row.dataset.k4 = parseFloat(k4);
+  row.dataset.price = parseFloat(price);
+  row.dataset.fullPrice = parseFloat(fullPrice);
+
+  return row;
+}
+
+function recalculateTotals() {
+  let total = 0;
+  let fullRevenue = 0;
+  document.querySelectorAll('#table-body tr').forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    const [q1, q2, q3, q4] = Array.from(inputs).map(input => parseInt(input.value) || 0);
+    const price = parseFloat(row.dataset.price);
+    const full = parseFloat(row.dataset.fullPrice);
+    const subtotal =
+      q1 * price * parseFloat(row.dataset.k1) +
+      q2 * price * parseFloat(row.dataset.k2) +
+      q3 * price * parseFloat(row.dataset.k3) +
+      q4 * price * parseFloat(row.dataset.k4);
+    const revenue =
+      q1 * full * parseFloat(row.dataset.k1) +
+      q2 * full * parseFloat(row.dataset.k2) +
+      q3 * full * parseFloat(row.dataset.k3) +
+      q4 * full * parseFloat(row.dataset.k4);
+
+    row.querySelector('.item-total').textContent = formatNumber(subtotal.toFixed(0));
+    total += subtotal;
+    fullRevenue += revenue;
+  });
+
+  document.getElementById('total-sum').textContent = formatNumber(total.toFixed(0));
+  document.getElementById('total-revenue').textContent = formatNumber((fullRevenue - total).toFixed(0));
+}
+
+document.getElementById("reset-button").addEventListener("click", () => {
+  document.querySelectorAll(".quantity-input").forEach(input => input.value = 0);
+  recalculateTotals();
+});
+
+fetchSheetData().then(items => {
+  const tableBody = document.getElementById('table-body');
+  items.forEach((item, index) => {
+    const row = renderRow(item, index);
+    tableBody.appendChild(row);
+  });
+});
