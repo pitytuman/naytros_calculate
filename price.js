@@ -12,24 +12,24 @@ function fetchSheetData() {
     });
 }
 
-function createItemCell([name, , , , , price, imgUrl]) {
-  const wrapper = document.createElement('td');
-  wrapper.innerHTML = `
-    <div><img src="${imgUrl}" alt="${name}" style="width:50px; height:auto;" /></div>
-    <div>${name}</div>
-    <div class="text-info fw-bold">${formatNumber(price)} ₽</div>
+function createItemCard([name, , , , , price, imgUrl]) {
+  const col = document.createElement('div');
+  col.className = 'col-6 col-sm-4 col-md-3 col-lg-2';
+  col.innerHTML = `
+    <div class="card bg-secondary text-light h-100 text-center p-2">
+      <img src="${imgUrl}" class="card-img-top mx-auto" style="height:60px; object-fit:contain;" alt="${name}">
+      <div class="card-body p-2">
+        <h6 class="card-title small">${name}</h6>
+        <p class="card-text text-info fw-bold mb-0">${formatNumber(price)} ₽</p>
+      </div>
+    </div>
   `;
-  return wrapper;
+  return col;
 }
 
 fetchSheetData().then(items => {
-  const tbody = document.getElementById('price-body');
-  for (let i = 0; i < items.length; i += 2) {
-    const row = document.createElement('tr');
-    const item1 = createItemCell(items[i]);
-    const item2 = items[i + 1] ? createItemCell(items[i + 1]) : document.createElement('td');
-    row.appendChild(item1);
-    row.appendChild(item2);
-    tbody.appendChild(row);
-  }
+  const container = document.getElementById('price-container');
+  items.forEach(item => {
+    container.appendChild(createItemCard(item));
+  });
 });
