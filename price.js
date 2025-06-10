@@ -18,7 +18,7 @@ function createItemCard([name, , , , , price, imgUrl]) {
 
   col.innerHTML = `
     <div class="bg-secondary text-light text-center p-2 rounded" style="font-size: 0.7rem;">
-      <img src="${imgUrl}" class="img-fluid mb-1" style="height:40px; object-fit:contain;" alt="${name}">
+      <img src="${imgUrl}" class="img-fluid mb-1" style="height:60px; object-fit:contain;" alt="${name}">
       <div class="fw-bold">${formatNumber(price)} ₽</div>
       <div>${name}</div>
     </div>
