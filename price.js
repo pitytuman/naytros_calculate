@@ -14,7 +14,7 @@ function fetchSheetData() {
 
 function createItemCard([name, , , , , price, imgUrl]) {
   const col = document.createElement('div');
-  col.className = 'col-1-10';
+  col.className = 'col-1-8';
 
   col.innerHTML = `
     <div class="bg-secondary text-light text-center p-2 rounded" style="font-size: 0.7rem;">
