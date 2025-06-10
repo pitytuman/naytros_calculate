@@ -1,10 +1,20 @@
 body {
-  background-image: url('https://raw.githubusercontent.com/pitytuman/naytros_calculate/main/images/background.jpg'); /* замените на свою ссылку или путь */
+  background-image: url('https://raw.githubusercontent.com/pitytuman/naytros_calculate/refs/heads/main/images/background.jpg'); /* замените на свою ссылку или путь */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
   color: white;
+}
+
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* полупрозрачный чёрный */
+  z-index: -1;
 }
 
 h1 {
@@ -38,4 +48,60 @@ img {
 tfoot td {
   font-weight: bold;
   background: #eee;
+}
+
+.col-1-8 {
+  width: 12.5%;
+  flex: 0 0 auto;
+  padding: 0.25rem;
+}
+@media (max-width: 1200px) {
+  .col-1-8 {
+    width: 25%;
+  }
+}
+@media (max-width: 768px) {
+  .col-1-8 {
+    width: 33.3333%;
+  }
+}
+@media (max-width: 576px) {
+  .col-1-8 {
+    width: 50%;
+  }
+}
+
+.item-card {
+  background-color: #343a40;
+  border-radius: 0.5rem;
+  padding: 1rem 0.5rem;
+  text-align: center;
+  color: white;
+  height: 100%;
+}
+.item-card img {
+  max-height: 100px;
+  width: auto;
+  margin-bottom: 0.5rem;
+}
+.item-name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.item-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffc107;
+}
+
+@media (max-width: 768px) {
+  .item-name {
+    font-size: 0.9rem;
+  }
+  .item-price {
+    font-size: 1rem;
+  }
+  .item-card img {
+    max-height: 100px;
+  }
 }
