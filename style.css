@@ -15,6 +15,14 @@ table {
   background: #fff;
 }
 
+thead th {
+  position: sticky;
+  top: 0;
+  background-color: #212529;
+  color: white;
+  z-index: 2;
+}
+
 th, td {
   border: 1px solid #ccc;
   padding: 10px;
