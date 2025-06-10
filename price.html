@@ -1,3 +1,4 @@
+<!-- price.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -24,6 +25,39 @@
     @media (max-width: 576px) {
       .col-1-8 {
         width: 50%;
+      }
+    }
+    .item-card {
+      background-color: #343a40;
+      border-radius: 0.5rem;
+      padding: 1rem 0.5rem;
+      text-align: center;
+      color: white;
+      height: 100%;
+    }
+    .item-card img {
+      max-height: 60px;
+      width: auto;
+      margin-bottom: 0.5rem;
+    }
+    .item-name {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .item-price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffc107;
+    }
+    @media (max-width: 768px) {
+      .item-name {
+        font-size: 0.9rem;
+      }
+      .item-price {
+        font-size: 1rem;
+      }
+      .item-card img {
+        max-height: 50px;
       }
     }
   </style>
