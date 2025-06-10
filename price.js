@@ -14,16 +14,14 @@ function fetchSheetData() {
 
 function createItemCard([name, , , , , price, imgUrl]) {
   const col = document.createElement('div');
-  col.className = 'col-6 col-sm-4 col-md-3 col-lg-2';
+  col.className = 'col-6 col-sm-4 col-md-2 col-lg-1 p-1';
   col.innerHTML = `
-    <div class="card bg-secondary text-light h-100 text-center p-2">
-      <img src="${imgUrl}" class="card-img-top mx-auto" style="height:60px; object-fit:contain;" alt="${name}">
-      <div class="card-body p-2">
-        <h6 class="card-title small">${name}</h6>
-        <p class="card-text text-info fw-bold mb-0">${formatNumber(price)} ₽</p>
-      </div>
-    </div>
-  `;
+  <div class="bg-secondary text-light text-center p-1 rounded" style="font-size: 0.65rem;">
+    <img src="${imgUrl}" class="img-fluid mb-1" style="height:50px; object-fit:contain;" alt="${name}">
+    <div class="fw-bold">${formatNumber(price)} ₽</div>
+    <div>${name}</div>
+  </div>
+`;
   return col;
 }
 
