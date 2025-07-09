@@ -1,8 +1,4 @@
-const csv = `location_name,npc_name,quest_name,image
-Деребас,Волк,Химсвет,images/quests/derebas_quests_1_chem_light.png
-Деребас,Волк,Говядина,images/quests/derebas_quests_1_beef.png
-Деребас,Цербер,Патруль,images/quests/patrol.png
-Нейтралы,Грок,Головы,images/quests/dog_heads.png`;
+const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTVCL2g2pNJ9eS_RkbG3lBt6aQFSAdWlB_9cvM90SiOFaHXD1cXL1Qmm6E5w8-tuITducUUUnRE79mV/pub?gid=1966758543&single=true&output=csv"
 
 let idCounter = 0;
     
@@ -59,12 +55,15 @@ function renderQuests(quests) {
   }).join('');
 }
 
-Papa.parse(csv, {
-  header: true,
-  skipEmptyLines: true,
-  complete: function(results) {
-    const data = results.data;
-    const nested = buildStaticTree(data);
-    document.getElementById("quests").innerHTML = renderLocations(nested);
-  }
-});
+fetch(csvUrl)
+  .then(res => res.text())
+  .then(csv => {
+    Papa.parse(csv, {
+      header: true,
+      complete: function(results) {
+        const data = results.data;
+        const nested = buildStaticTree(data);
+        document.getElementById("quests").innerHTML = renderLocations(nested);
+      }
+    });
+  });
